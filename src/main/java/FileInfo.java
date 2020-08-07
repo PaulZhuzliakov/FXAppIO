@@ -58,7 +58,8 @@ public class FileInfo {
             if (this.type == FileType.DIRECTORY) {
                 this.size = -1L;
             }
-            this.lastModified = LocalDateTime.ofInstant(Files.getLastModifiedTime(path).toInstant(), ZoneOffset.ofHours(0));
+            //ZoneOffset.ofHours(3) - Чаовая зона + 3 (Москва)
+            this.lastModified = LocalDateTime.ofInstant(Files.getLastModifiedTime(path).toInstant(), ZoneOffset.ofHours(3));
 
         } catch (IOException e) {
             throw new RuntimeException("Unable create file from path");
