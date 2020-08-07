@@ -1,9 +1,11 @@
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -89,6 +91,21 @@ public class PanelController implements Initializable{
         //по умолчанию выбираем первую корневую директорию
         disksBox.getSelectionModel().select(0);
 
+        //обработка клика по элементу таблицы
+        filesTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (mouseEvent.getClickCount()==2) {
+                    //pathField.getText()-текущий каталог. resolve добавляет к текущему пути элемент в filesTable по которому 2раза кликнули
+                    Path path = Paths.get(pathField.getText()).resolve(filesTable.getSelectionModel().getSelectedItem().getFileName());
+                    //если выбранный элемент - директория, перекодим в неё
+                    if (Files.isDirectory(path)) {
+                        updateList(path);
+                    }
+                }
+            }
+        });
+
 
         //Paths.get- в Java NIO способ создания путей
         updateList(Paths.get("." + "/CatalogForTest"));
@@ -96,7 +113,6 @@ public class PanelController implements Initializable{
 
     //метод собирает список файлов из любой директории и закидывает это в таблицу
     public void updateList(Path path) {
-
         try {
             pathField.setText(path.normalize().toAbsolutePath().toString());
             filesTable.getItems().clear();
@@ -119,7 +135,27 @@ public class PanelController implements Initializable{
     public void btnPathUpAction(ActionEvent actionEvent) {
         //берем строчку из pathField и по ней строим объект типа путь. И у него запрашиваем родителя
         Path upperPath = Paths.get(pathField.getText()).getParent();
+        if (upperPath !=null) {
+            updateList(upperPath);
+        }
+    }
 
+    public void selectDiscAction(ActionEvent actionEvent) {
+        //Полученние ссылки на выбранный диск ComboBox. Источником события actionEvent является ComboBox
+        ComboBox<String> element = (ComboBox<String>) actionEvent.getSource();
+        //getSelectionModel() - инф-ия о выделенном элементе в ComboBox
+        updateList(Paths.get(element.getSelectionModel().getSelectedItem()));
+    }
 
+    public String getSelectedFileName() {
+        //если таблица не активна, ничего не возвращать
+        if (filesTable.isFocused()) {
+            return null;
+        }
+        return filesTable.getSelectionModel().getSelectedItem().getFileName();
+    }
+
+    public String getCurrentPath() {
+        return pathField.getText();
     }
 }
