@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
@@ -17,7 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class PanelController implements Initializable{
+public class PanelController implements Initializable {
     @FXML
     //TableView будет содержать в себе набор объектов типа FileInfo
             TableView<FileInfo> filesTable;
@@ -47,7 +48,7 @@ public class PanelController implements Initializable{
         fileSizeColumn.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getSize()));
         fileSizeColumn.setCellFactory(column -> {
             // отвечает за то как выглядит ячейка в столбце
-            return new TableCell<FileInfo, Long>(){
+            return new TableCell<FileInfo, Long>() {
                 @Override
                 //значение ячейки, пустая ячейка или нет
                 protected void updateItem(Long item, boolean empty) {
@@ -85,7 +86,7 @@ public class PanelController implements Initializable{
 
         disksBox.getItems().clear();
         //FileSystems предоставляет инфу о файловой системе. берем дефолтную файловую систему. запрашиваем список корневых директорий
-        for (Path p: FileSystems.getDefault().getRootDirectories()) {
+        for (Path p : FileSystems.getDefault().getRootDirectories()) {
             disksBox.getItems().add(p.toString());
         }
         //по умолчанию выбираем первую корневую директорию
@@ -95,7 +96,7 @@ public class PanelController implements Initializable{
         filesTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (mouseEvent.getClickCount()==2) {
+                if (mouseEvent.getClickCount() == 2) {
                     //pathField.getText()-текущий каталог. resolve добавляет к текущему пути элемент в filesTable по которому 2раза кликнули
                     Path path = Paths.get(pathField.getText()).resolve(filesTable.getSelectionModel().getSelectedItem().getFileName());
                     //если выбранный элемент - директория, перекодим в неё
@@ -135,7 +136,7 @@ public class PanelController implements Initializable{
     public void btnPathUpAction(ActionEvent actionEvent) {
         //берем строчку из pathField и по ней строим объект типа путь. И у него запрашиваем родителя
         Path upperPath = Paths.get(pathField.getText()).getParent();
-        if (upperPath !=null) {
+        if (upperPath != null) {
             updateList(upperPath);
         }
     }
@@ -158,4 +159,5 @@ public class PanelController implements Initializable{
     public String getCurrentPath() {
         return pathField.getText();
     }
+
 }

@@ -9,9 +9,16 @@
       fx:controller="PanelController">
     <HBox>
         <ComboBox fx:id="disksBox" onAction="#selectDiscAction"/>
-        <TextField fx:id="pathField" editable="false" HBox.hgrow="ALWAYS" />
+        <TextField fx:id="pathField" editable="false" HBox.hgrow="ALWAYS"/>
+<!--        <Button text="бновить" onAction="#refresh"/>-->
         <Button text="вверх" onAction="#btnPathUpAction"/>
     </HBox>
     <TableView VBox.vgrow="ALWAYS" fx:id="filesTable"/>
+
+    <properties>
+<!--        свойство ctrl, оно указывать на контроллер. т.е. на свой собственный контроллер PanelController-->
+<!--        эту ссылку используем в Controller`е, предварительно привязав(за@FXML`в) туда leftPanel и rightPanel-->
+        <ctrl><fx:reference source="controller"/> </ctrl>
+    </properties>
 
 </VBox>
