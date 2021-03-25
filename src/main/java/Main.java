@@ -12,7 +12,15 @@ public class Main extends Application {
         primaryStage.setTitle("Java File Manager");
         primaryStage.setScene(new Scene(root, 1280, 600));
         primaryStage.show();
+        //00
+        //1
+        //2
+
         //0
+        //1
+        //2
+        //3
+        //4
     }
 
     public static void main(String[] args) {
