@@ -7,8 +7,12 @@ import javafx.stage.Stage;
 //2
 //3
 //4
+<<<<<<< 4be5f9fa0e0a8e8e841f93f18723885df5f7dee5
 //5
 //01
+=======
+//54
+>>>>>>> 0
 
 public class Main extends Application {
 
