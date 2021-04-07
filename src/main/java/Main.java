@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 //2_bad commit
 
 //1
+//2_bad commit
 public class Main extends Application {
 
     @Override
